@@ -8,7 +8,7 @@ interface RegisterUsecaseRequest {
   password: string;
 }
 
-export class RegisterUSecase {
+export class RegisterUsecase {
   constructor(private usersRepository: PrismaUsersRepository) {}
 
   async execute({ name, email, password }: RegisterUsecaseRequest) {
