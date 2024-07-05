@@ -1,3 +1,4 @@
+import { UserAlreadyExistsError } from "@/errors/user-already-exists-error";
 import { prisma } from "@/lib/prisma";
 import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository";
 import { UsersRepository } from "@/repositories/users-repository";
@@ -16,7 +17,7 @@ export class RegisterUsecase {
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
-      throw new Error("User with same email already exists");
+      throw new UserAlreadyExistsError();
     }
 
     const password_hash = await hash(password, 6);
