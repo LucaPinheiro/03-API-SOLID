@@ -3,8 +3,17 @@ import { expect, describe, it } from "vitest";
 import { AuthenticateUsecase } from "./authenticate";
 import { hash } from "bcryptjs";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
+import { beforeEach } from "node:test";
+
+let usersRepository: InMemoryUsersRepository;
+let sut: AuthenticateUsecase;
 
 describe("Authenticate Usecase", () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository();
+    sut = new AuthenticateUsecase(usersRepository);
+  });
+
   it("should be able to authenticate", async () => {
     const usersRepository = new InMemoryUsersRepository();
     const sut = new AuthenticateUsecase(usersRepository);
