@@ -24,7 +24,6 @@ export class CheckInUsecase {
 
     if(checkInOnSameDate) {
       throw new Error();
-    
     }
 
     const checkIn = await this.checkInsRepository.create({
