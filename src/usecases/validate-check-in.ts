@@ -5,6 +5,8 @@ import { getDistanceBetweenCoordinates } from "@/utils/get-distance-between-coor
 import { CheckIn } from "@prisma/client";
 import { MaxNumberOfCheckInsError } from "./errors/max-number-of-check-ins-errors";
 import { MaxDistanceError } from "./errors/max-distance-error";
+import dayjs from "dayjs";
+import { LateCheckInValidationError } from "./errors/late-check-in-validation-error";
 
 interface ValidateCheckInUsecaseRequest {
   checkInId: string;
@@ -21,6 +23,15 @@ export class ValidateCheckInUsecase {
 
     if (!checkIn) {
       throw new ResourceNotFoundError();
+    }
+
+    const distanceInMinutesFromCheckInCreation = dayjs(new Date()).diff(
+      checkIn.created_at,
+      "minutes"
+    );
+
+    if (distanceInMinutesFromCheckInCreation > 20) {
+      throw new LateCheckInValidationError();
     }
 
     checkIn.validated_at = new Date();
