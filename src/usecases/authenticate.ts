@@ -20,11 +20,11 @@ export class AuthenticateUsecase {
     password,
   }: AuthenticateUsecaseRequest): Promise<AuthenticateUsecaseResponse> {
     const user = await this.usersRepository.findByEmail(email);
-    console.log(user);
 
     if (!user) {
       throw new InvalidCredentialsError();
     }
+    console.log("F")
 
     const doestPasswordMatches = await compare(password, user.password_hash);
 
